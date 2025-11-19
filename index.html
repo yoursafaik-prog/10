@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Diary</title>
+    <style>
+        body {
+            font-family: 'Dancing Script', cursive; /* Romantic cursive font */
+            background: linear-gradient(135deg, #ffe6e6, #ffb3ba); /* Soft pink gradient */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #diary {
+            width: 600px;
+            height: 800px;
+            background-color: #fff;
+            border: 2px solid #d32f2f; /* Red border for romance */
+            box-shadow: 0 0 20px rgba(211, 47, 47, 0.3);
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        #cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            background: url('https://via.placeholder.com/600x800/ffcccc?text=Romantic+Background') no-repeat center center;
+            background-size: cover;
+            color: #8b0000; /* Dark red text */
+            position: relative;
+        }
+        #cover::before {
+            content: '💖';
+            font-size: 50px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        #cover::after {
+            content: '💖';
+            font-size: 50px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            animation: float 3s ease-in-out infinite reverse;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        #cover h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+            to { text-shadow: 2px 2px 8px rgba(211, 47, 47, 0.5); }
+        }
+        .page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff, #ffe6e6); /* Subtle gradient */
+            color: #333;
+            position: relative;
+        }
+        .page::before {
+            content: '🌹';
+            font-size: 30px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            opacity: 0.5;
+            animation: floatRose 4s ease-in-out infinite;
+        }
+        .page::after {
+            content: '🌹';
+            font-size: 30px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0.5;
+            animation: floatRose 4s ease-in-out infinite reverse;
+        }
+        @keyframes floatRose {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(5deg); }
+        }
+        .page img {
+            max-width: 80%;
+            max-height: 40%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            animation: pulse 3s ease-in-out infinite 2s; /* Pulse after reveal */
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+            50% { box-shadow: 0 0 20px rgba(211, 47, 47, 0.3); }
+        }
+        .page p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-style: italic;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-in-out 1s, transform 1s ease-in-out 1s; /* Delayed start */
+            animation: fadeInText 2s ease-in-out 2s forwards; /* Additional fade after initial reveal */
+        }
+        @keyframes fadeInText {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+        .page.show img {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .page.show p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            font-family: 'Dancing Script', cursive;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24); /* Romantic red-orange gradient */
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: buttonGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes buttonGlow {
+            from { box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+            to { box-shadow: 0 4px 12px rgba(238, 90, 36, 0.4); }
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        .turning {
+            transform: rotateY(90deg);
+            transition: transform 1s ease-in-out;
+        }
+        .cover-turning {
+            transform: rotateY(-90deg);
+            transition: transform 1s ease-in-out;
+        }
+        #finalMessage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 32px;
+            font-weight: bold;
+            color: #d32f2f;
+            background: linear-gradient(135deg, #ffe6e6, #ffb3ba);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        #finalMessage::before {
+            content: '💕';
+            font-size: 40px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        #finalMessage::after {
+            content: '💕';
+            font-size: 40px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            animation: float 3s ease-in-out infinite reverse;
+        }
+        /* Unique styles for each page to add variety */
+        #page1 { background: linear-gradient(135deg, #fff, #ffe6e6); }
+        #page2 { background: linear-gradient(135deg, #fff, #ffb3ba); }
+        #page3 { background: linear-gradient(135deg, #fff, #ffcccc); }
+        #page4 { background: linear-gradient(135deg, #fff, #ffe6e6); }
+        #page5 { background: linear-gradient(135deg, #fff, #ffb3ba); }
+        #page6 { background: linear-gradient(135deg, #fff, #ffcccc); }
+        #page7 { background: linear-gradient(135deg, #fff, #ffe6e6); }
+        #page8 { background: linear-gradient(135deg, #fff, #ffb3ba); }
+        #page9 { background: linear-gradient(135deg, #fff, #ffcccc); }
+        #page10 { background: linear-gradient(135deg, #fff, #ffe6e6); }
+        #finalPage { background: linear-gradient(135deg, #fff, #ffb3ba); }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="diary">
+        <div id="cover">
+            <h1>You are my real problem, because-</h1>
+            <button id="openBtn">Open the diary</button>
+        </div>
+        
+        <div class="page" id="page1" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffcccc?text=Romantic+Image+1" alt="Her picture 1">
+            <p>In the quiet moments of dawn, your smile lights up the world like the first ray of sun. Your grace and kindness inspire me every day, making my heart dance with joy.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="page2" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffb3ba?text=Romantic+Image+2" alt="Her picture 2">
+            <p>Your eyes hold the depth of the ocean, mysterious and captivating. In them, I see a universe of dreams and possibilities that I long to explore with you.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="page3" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffcccc?text=Romantic+Image+3" alt="Her picture 3">
+            <p>Like a gentle breeze on a summer day, your presence brings peace and serenity. You are the melody that soothes my soul and fills my life with harmony.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="page4" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffe6e6?text=Romantic+Image+4" alt="Her picture 4">
+            <p>Your laughter is like music to my ears, a symphony of joy that echoes in my heart. With every giggle, you remind me of the simple beauties in life.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="page5" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffb3ba?text=Romantic+Image+5" alt="Her picture 5">
+            <p>In your strength, I find inspiration; in your vulnerability, I find connection. You are a beacon of light, guiding me through the darkest nights.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="page6" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffcccc?text=Romantic+Image+6" alt="Her picture 6">
+            <p>Your touch is like silk, soft and comforting. In your embrace, I feel safe and loved, as if the world outside ceases to exist.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="page7" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffe6e6?text=Romantic+Image+7" alt="Her picture 7">
+            <p>You possess a wisdom that surpasses ages, and a heart full of compassion. Every moment with you is a treasure I hold dear.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="page8" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffb3ba?text=Romantic+Image+8" alt="Her picture 8">
+            <p>Like a rare flower in bloom, your beauty unfolds in layers, each one more enchanting than the last. I am captivated by your elegance.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="page9" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffcccc?text=Romantic+Image+9" alt="Her picture 9">
+            <p>Your dreams are my aspirations, your hopes my guiding stars. Together, we can conquer the world, hand in hand.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="page10" style="display: none;">
+            <img src="https://via.placeholder.com/400x300/ffe6e6?text=Romantic+Image+10" alt="Her picture 10">
+            <p>In every beat of my heart, I feel your presence. You are the queen of my world, the love that completes me.</p>
+            <button class="turnBtn">Turn the page</button>
+        </div>
+        
+        <div class="page" id="finalPage" style="display: none;">
+            <img src="last.jpg" alt="Final picture">
+            <p>I love the *us* we are right now, but what I look forward to most is the *us* fifty years from now. I want to be the one holding your hand, watching the sunsets, and laughing about old memories when our hair is gray. Being old with you isn't a future plan; its my deepest, most romantic dream. I love you.</p>
+            <button id="finalBtn">Here's the final message</button>
+        </div>
+        
+        <div id="finalMessage" style="display: none;">
+            <p>I love you, my Queen</p>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 0;
+        const pages = document.querySelectorAll('.page');
+        const cover = document.getElementById('cover');
+        const finalMessage = document.getElementById('finalMessage');
+        const openBtn = document.getElementById('openBtn');
+        const finalBtn = document.getElementById('finalBtn');
+        const turnBtns = document.querySelectorAll('.turnBtn');
+
+        openBtn.addEventListener('click', () => {
+            cover.classList.add('cover-turning');
+            setTimeout(() => {
+                cover.style.display = 'none';
+                cover.classList.remove('cover-turning');
+                pages[0].style.display = 'flex';
+                pages[0].classList.add('show'); // Trigger smooth reveal
+                currentPage = 0;
+            }, 1000);
+        });
+
+        turnBtns.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                const current = pages[currentPage];
+                current.classList.add('turning');
+                setTimeout(() => {
+                    current.style.display = 'none';
+                    current.classList.remove('turning', 'show');
+                    if (currentPage < 9) {
+                        currentPage++;
+                        pages[currentPage].style.display = 'flex';
+                        pages[currentPage].classList.add('show'); // Trigger smooth reveal
+                    } else {
+                        document.getElementById('finalPage').style.display = 'flex';
+                        document.getElementById('finalPage').classList.add('show'); // Trigger smooth reveal
+                    }
+                }, 1000);
+            });
+        });
+
+        finalBtn.addEventListener('click', () => {
+            document.getElementById('finalPage').style.display = 'none';
+            document.getElementById('finalPage').classList.remove('show');
+            finalMessage.style.display = 'flex';
+        });
+    </script>
+</body>
+</html>
